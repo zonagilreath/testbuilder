@@ -21,7 +21,30 @@ var detectNetwork = function(cardNumber) {
   			return 'American Express'; 
   		}
   	}
-  // Once you've read this, go ahead and try to implement this function, then return to the console.
+  	if (cardNumber.length === 13 || cardNumber.length === 16 || cardNumber.length === 19) {
+  		if (cardNumber.slice(0,1) === '4') {
+  			return 'Visa';
+  		}
+  	} 
+
+  	if (cardNumber.length === 16) {
+  		if (parseInt(cardNumber.slice(0,2)) > 50 && parseInt(cardNumber.slice(0,2)) < 56) {
+  			return 'MasterCard'; 
+  		}
+  	}
+
+  	if (cardNumber.length === 16 || cardNumber.length === 19) {
+  		if (parseInt(cardNumber.slice(0,4)) === 6011 || parseInt(cardNumber.slice(0,3)) > 643 && parseInt(cardNumber.slice(0,3)) < 660) {
+  			return 'Discover'; 
+  		}
+  	}
+  	
+  	if (cardNumber.length >= 12 && cardNumber.length <= 19) {
+  		if (parseInt(cardNumber.slice(0,4)) === 6304 || parseInt(cardNumber.slice(0,4)) === 5018 || parseInt(cardNumber.slice(0,4)) === 5020 || parseInt(cardNumber.slice(0,4)) === 5038) {
+  			return 'Maestro'; 
+  		}
+  	}
+  	
 };
 
 
