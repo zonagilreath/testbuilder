@@ -42,13 +42,13 @@ var detectNetwork = function(cardNumber) {
   }
 
   if (cardNumber.length === 16 || cardNumber.length === 19) {
-    if (parseInt(cardNumber.slice(0,4)) === 6011 || parseInt(cardNumber.slice(0,3)) > 643 && parseInt(cardNumber.slice(0,3)) < 660) {
+    if (cardNumber.slice(0,4) === '6011' || parseInt(cardNumber.slice(0,3)) > 643 && parseInt(cardNumber.slice(0,3)) < 660) {
       return 'Discover'; 
     }
   }
   
   if (cardNumber.length >= 12 && cardNumber.length <= 19) {
-    if (parseInt(cardNumber.slice(0,4)) === 6304 || parseInt(cardNumber.slice(0,4)) === 5018 || parseInt(cardNumber.slice(0,4)) === 5020 || parseInt(cardNumber.slice(0,4)) === 5038) {
+    if (cardNumber.slice(0,4) === '6304' || cardNumber.slice(0,4) === '5018' || cardNumber.slice(0,4) === '5020' || cardNumber.slice(0,4) === '5038') {
       return 'Maestro'; 
     }
   }

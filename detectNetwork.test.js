@@ -84,20 +84,12 @@ describe('Visa', function() {
   // Chai provides an assert that acts the same as our previous assert.
   // Search the documentation to figure out how to access it. 
   //   http://chaijs.com/
-  var assert = chai.assert;
- 
-
-  it('has a prefix of 4 and a length of 13', function() {
-    assert(detectNetwork('4123456789012') === 'Visa');
-  });
-
-  it('has a prefix of 4 and a length of 16', function() {
-    assert(detectNetwork('4123456789012345') === 'Visa');
-  });
-
-  it('has a prefix of 4 and a length of 19', function() {
-    assert(detectNetwork('4123456789012345678') === 'Visa');
-  });
+  var expect = chai.expect;
+  for (let length of [13, 16, 19]){
+    it('has a prefix of 4 and a length of ' + length, function(){
+      expect(detectNetwork('4' + '1'.repeat(length-1))).to.equal('Visa');
+    })
+  }
 });
 
 describe('MasterCard', function() {
@@ -106,19 +98,12 @@ describe('MasterCard', function() {
   // If you want to know more, check out the documentation. 
   //   http://chaijs.com/api/bdd/
   var expect = chai.expect;
- 
-  it('has a prefix of 51 and a length of 16', function() {
-    expect(detectNetwork('5112345678901234')).to.equal('MasterCard');
-  });
- 
-  it('has a prefix of 52 and a length of 16', function() {
-    expect(detectNetwork('5212345678901234')).to.equal('MasterCard');
-  });
- 
-  it('has a prefix of 53 and a length of 16', function() {
-    expect(detectNetwork('5312345678901234')).to.equal('MasterCard');
-  });
- 
+
+  for (let prefix = 51; prefix < 56; prefix++){
+    it('has a prefix of ' + prefix + ' and a length of 16', function(){
+      expect(detectNetwork(prefix + '12345678912345')).to.equal('MasterCard');
+    });
+  }
 
   // You can also use should instead of expect, which changes the style
   // slightly. It really doesn't matter which one you use - check out 
@@ -127,14 +112,6 @@ describe('MasterCard', function() {
   // and should, but that's just for learning), so once you've gotten 
   // these tests to pass using should syntax, refactor your tests to 
   // use either expect or should, but not both. 
-  
-  it('has a prefix of 54 and a length of 16', function() {
-    expect(detectNetwork('5412345678901234')).to.equal('MasterCard');
-  });
- 
-  it('has a prefix of 55 and a length of 16', function() {
-    expect(detectNetwork('5512345678901234')).to.equal('MasterCard');
-  })
  
 });
 
@@ -189,30 +166,31 @@ describe('should support China UnionPay', function(){
     for (let i = 622126; i <= 622926; i++){
       let prefix = String(i);
       it('has a prefix of ' + prefix + ' and a length of ' + length, function(){
-          expect(detectNetwork(prefix + '1'.repeat(length - 6))).to.equal('China UnionPay');
+          expect(detectNetwork(prefix + '1'.repeat(length - prefix.length))).to.equal('China UnionPay');
       });
     }
     for (let i = 624; i <= 626; i++){
       let prefix = String(i);
       it('has a prefix of ' + prefix + ' and a length of ' + length, function(){
-          expect(detectNetwork(prefix + '1'.repeat(length - 3))).to.equal('China UnionPay');
+          expect(detectNetwork(prefix + '1'.repeat(length - prefix.length))).to.equal('China UnionPay');
       });
     }
     for (let i = 6282; i <= 6288; i++){
       let prefix = String(i);
       it('has a prefix of ' + prefix + ' and a length of ' + length, function(){
-          expect(detectNetwork(prefix + '1'.repeat(length - 4))).to.equal('China UnionPay');
+          expect(detectNetwork(prefix + '1'.repeat(length - prefix.length))).to.equal('China UnionPay');
       });
     }
-  })
+  });
 });
+
 describe('should support Switch', function(){
   var expect = chai.expect;
   let prefixes = ['4903', '4905', '4911', '4936', '564182', '633110', '6333', '6759'];
   prefixes.forEach(function(prefix){
-    let lengths = [16, 18, 19];
+      let lengths = [16, 18, 19];
     lengths.forEach(function(length){
-      it(prefix + '1'.repeat(length - prefix.length) + ' has a prefix of ' + prefix + ' and a length of ' + length, function(){
+      it('has a prefix of ' + prefix + ' and a length of ' + length, function(){
           expect(detectNetwork(prefix + '1'.repeat(length - prefix.length))).to.equal('Switch');
       });
     })
