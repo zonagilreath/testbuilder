@@ -1,4 +1,5 @@
 /*
+/*
  * You'll eventually be given instructions how to use this file
  * If you want to use it before then, you'll have to figure it out yourself
  */
@@ -171,17 +172,53 @@ describe('Maestro', function() {
   var expect = chai.expect;
   let prefixes = ['5018', '5020', '5038', '6304'];
   prefixes.forEach(function(prefix){
-    for (var length = 12; length <= 19; length++) {
-      (function(length) {
+    for (let length = 12; length <= 19; length++) {
+      // (function(length) {
         it('has a prefix of ' + prefix + ' and a length of ' + length, function(){
           expect(detectNetwork(prefix + '1'.repeat(length - 4))).to.equal('Maestro');
         });
-      })(length);
+      // })(length);
     }
   });
 });
 
+describe('should support China UnionPay', function(){
+  var expect = chai.expect;
+  let lengths = [16, 17, 18, 19];
+  lengths.forEach(function(length){
+    for (let i = 622126; i <= 622926; i++){
+      let prefix = String(i);
+      it('has a prefix of ' + prefix + ' and a length of ' + length, function(){
+          expect(detectNetwork(prefix + '1'.repeat(length - 6))).to.equal('China UnionPay');
+      });
+    }
+    for (let i = 624; i <= 626; i++){
+      let prefix = String(i);
+      it('has a prefix of ' + prefix + ' and a length of ' + length, function(){
+          expect(detectNetwork(prefix + '1'.repeat(length - 3))).to.equal('China UnionPay');
+      });
+    }
+    for (let i = 6282; i <= 6288; i++){
+      let prefix = String(i);
+      it('has a prefix of ' + prefix + ' and a length of ' + length, function(){
+          expect(detectNetwork(prefix + '1'.repeat(length - 4))).to.equal('China UnionPay');
+      });
+    }
+  })
+});
+describe('should support Switch', function(){
+  var expect = chai.expect;
+  let prefixes = ['4903', '4905', '4911', '4936', '564182', '633110', '6333', '6759'];
+  prefixes.forEach(function(prefix){
+    let lengths = [16, 18, 19];
+    lengths.forEach(function(length){
+      it(prefix + '1'.repeat(length - prefix.length) + ' has a prefix of ' + prefix + ' and a length of ' + length, function(){
+          expect(detectNetwork(prefix + '1'.repeat(length - prefix.length))).to.equal('Switch');
+      });
+    })
+  });
+});
 
 
-describe('should support China UnionPay')
-describe('should support Switch')
+//China UnionPay always has a prefix of 622126-622925, 624-626, or 6282-6288 and a length of 16-19.
+//Switch always has a prefix of 4903, 4905, 4911, 4936, 564182, 633110, 6333, or 6759 and a length of 16, 18, or 19.
